@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { HomeStyled, FormNumberOfTeams, FormNameTeams, FloatLabel } from "./HomeStyle";
+import { useState } from "react";
+import { HomeStyled, FormNumberOfTeams, FormNameTeams, FormButton } from "./HomeStyle";
 
 import InputTeam from "../../components/InputTeam/InputTeam";
 
@@ -38,25 +38,26 @@ const Home = () => {
 
             <section id="form-teams">
                 <FormNumberOfTeams onSubmit={createTeams}>
-                    <FloatLabel>
-                        <label htmlFor="number-teams">How many teams will play?</label>
-                        <input type="number" id="number-teams" onChange={(event) => setTotalOfTeams(+event.target.value)} />
-                    </FloatLabel>
-
-                    <button type="submit">Enter</button>
+                    <label htmlFor="number-teams">How many teams will play?</label>
+                    <input type="number" id="number-teams" onChange={(event) => setTotalOfTeams(+event.target.value)} />
+                    <FormButton type="submit">Enter</FormButton>
                 </FormNumberOfTeams>
+                  
+                {teams && teams.length > 2 &&
+                    <FormNameTeams onSubmit={saveNameTeams}>
+                        <p>If you want, you can change the teams name:</p>
 
-                <FormNameTeams onSubmit={saveNameTeams}>
-                    <span>If you want, you can change the teams name:</span>
-                    {teams &&
-                        teams.map(team => (
-                            <InputTeam numberTeam={team} />
-                        ))
-                    }
-
-                    <button type="submit">Save</button>
-                </FormNameTeams>
-               
+                            <div id="list-teams">
+                                {teams &&
+                                    teams.map(team => (
+                                        <InputTeam numberTeam={team} />
+                                    ))
+                                }
+                            </div>
+                            
+                        <FormButton type="submit">Save</FormButton>
+                    </FormNameTeams>
+                }
             </section>
         </HomeStyled>
     )
