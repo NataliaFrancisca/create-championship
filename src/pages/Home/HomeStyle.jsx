@@ -115,6 +115,10 @@ export const FormNumberOfTeams = styled.form`
         padding: 5px 10px;
         margin: 6px 0;
         border-radius: 4px;
+
+        @media screen and (max-width: 700px) {
+            padding: 10px;
+        }
     }
 
     & input[type=number]::-webkit-inner-spin-button { 
@@ -139,5 +143,9 @@ export const FormButton = styled.button`
 
     &:hover{
         background-color: var(--pink);
+    }
+
+    @media screen and (max-width: 700px) {
+        padding: 10px 16px;
     }
 `
