@@ -7,7 +7,7 @@ export const HomeStyled = styled.main`
 
     @media screen and (max-width: 700px) {
         grid-template-columns: 95%;
-        grid-template-rows: 100vh auto;
+        grid-template-rows: 90vh auto;
         justify-content: center;
     }
 
