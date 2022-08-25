@@ -7,8 +7,8 @@ export const HomeStyled = styled.main`
 
     @media screen and (max-width: 700px) {
         grid-template-columns: 95%;
+        grid-template-rows: 100vh auto;
         justify-content: center;
-        padding: 10px 0;
     }
 
     & #home-message{
@@ -38,7 +38,6 @@ export const HomeStyled = styled.main`
         background-color: var(--orange);
         padding: 20px;
         display: flex;
-  
         flex-direction: column;
 
         @media screen and (max-width: 700px) {
@@ -50,7 +49,7 @@ export const FormNameTeams = styled.form`
     max-height: 70%;
     width: 90%;
 
-    margin-top: 20px;
+    margin: 10px;
     padding: 20px;
     border-radius: 4px;
 
