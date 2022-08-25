@@ -17,6 +17,7 @@ export const InputStyled = styled.div`
 
         @media screen and (max-width: 700px) {
             width: 80%;
+            padding: 10px;
         }
     }
 `
