@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { HomeStyled, FormNumberOfTeams, FormNameTeams, FormButton } from "./HomeStyle";
+import { useTeamsContext } from "../../hook/useTeamsContext";
 
 import InputTeam from "../../components/InputTeam/InputTeam";
 
 const Home = () => {
-
     const [totalOfTeams, setTotalOfTeams] = useState(0);
-    const [teams, setTeams] = useState([]);
+    const {teams, setTeams} = useTeamsContext();
+
+    const navigate = useNavigate();
 
     const createTeams = () => {
         event.preventDefault();
@@ -25,7 +29,8 @@ const Home = () => {
     const saveNameTeams = () => {
         event.preventDefault();
         console.log("é mesmo")
-        console.log(teams);
+        setTeams(teams);
+        navigate("/matches");
     }
 
     return(
@@ -54,7 +59,6 @@ const Home = () => {
                                     ))
                                 }
                             </div>
-                            
                         <FormButton type="submit">Save</FormButton>
                     </FormNameTeams>
                 }
