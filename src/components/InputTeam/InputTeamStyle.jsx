@@ -14,5 +14,9 @@ export const InputStyled = styled.div`
         margin-left: 6px;
         background-color: var(--white);
         border: solid black 2px;
+
+        @media screen and (max-width: 700px) {
+            width: 80%;
+        }
     }
 `
