@@ -6,7 +6,9 @@ export const HomeStyled = styled.main`
     min-height: 100vh;
 
     @media screen and (max-width: 700px) {
-        grid-template-columns: 100%;
+        grid-template-columns: 90%;
+        justify-content: center;
+        padding: 10px 0;
     }
 
     & #home-message{
@@ -37,14 +39,19 @@ export const HomeStyled = styled.main`
         background-color: var(--orange);
         padding: 20px;
         display: flex;
+  
         flex-direction: column;
+
+        @media screen and (max-width: 700px) {
+            height: fit-content;
+        }
     }
 `
 export const FormNameTeams = styled.form`
     max-height: 70%;
     width: 90%;
 
-    margin: 20px 0;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 4px;
 
