@@ -6,7 +6,7 @@ export const HomeStyled = styled.main`
     min-height: 100vh;
 
     @media screen and (max-width: 700px) {
-        grid-template-columns: 90%;
+        grid-template-columns: 95%;
         justify-content: center;
         padding: 10px 0;
     }
@@ -16,7 +16,6 @@ export const HomeStyled = styled.main`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0 10px;
 
         & h1{
             font-size: 3em;
