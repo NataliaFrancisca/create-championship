@@ -7,7 +7,9 @@ import { useTeamsContext } from "../../hook/useTeamsContext";
 import InputTeam from "../../components/InputTeam/InputTeam";
 
 const Home = () => {
+
     const [totalOfTeams, setTotalOfTeams] = useState(0);
+
     const {teams, setTeams} = useTeamsContext();
 
     const navigate = useNavigate();
@@ -28,7 +30,6 @@ const Home = () => {
 
     const saveNameTeams = () => {
         event.preventDefault();
-        console.log("é mesmo")
         setTeams(teams);
         navigate("/matches");
     }
