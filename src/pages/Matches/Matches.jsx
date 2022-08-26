@@ -7,7 +7,7 @@ const Matches = () => {
 
     // const [teamsFiltered, setTeamsFiltered] = useState();
     const [arrMatches, setArrMatches] = useState([]);
-    const [sortMatches, setSortMatches] = useState([]);
+    const [matchesRandom, setMatchesRandom] = useState([]);
 
     // const {teams} = useTeamsContext();
 
@@ -30,28 +30,37 @@ const Matches = () => {
         setArrMatches(state);
     }
 
-    useEffect(() => {
-        if(arrMatches.length > 0){
-            console.log(arrMatches)
-        }
-    },[arrMatches])
-
-
-    // GERAR UMA LISTA DE PARTIDAS ALEATORIAS, EVITAR O MESMO TIVE JOGAR DUAS PARTIDAS SEGUIDAS
-    const randomMatches = () => {
+    // GERAR UMA LISTA DE PARTIDAS ALEATORIAS, EVITAR O MESMO TIME JOGAR DUAS PARTIDAS SEGUIDAS
+    const getRandomMatch = (sortMatches) => {
         const randomNumber = Math.floor(Math.random() * arrMatches.length);
         const randomMatch = arrMatches[randomNumber];
 
         const checkAlreadyExist = sortMatches.some(match => JSON.stringify(match) == JSON.stringify(randomMatch));
-        const checkPlayedLastGame = sortMatches.length > 0 ? sortMatches.at(-1) : false;
+        const teamPlayedLastMatch = sortMatches.length > 0 ? sortMatches.at(-1) : false;
 
-        const checkTeste = checkPlayedLastGame && randomMatch.includes(checkPlayedLastGame[0]);
-        const checkTesteDos = checkPlayedLastGame && randomMatch.includes(checkPlayedLastGame[1]);
+        const checkFirstTeamHadPlayed = teamPlayedLastMatch && randomMatch.includes(teamPlayedLastMatch[0]);
+        const checkSecondTeamHadPlayed = teamPlayedLastMatch && randomMatch.includes(teamPlayedLastMatch[1]);
 
-        if(!checkTeste && !checkTesteDos && !checkAlreadyExist){
-            setSortMatches(prev => [...prev, randomMatch]);
-        }
+        return !checkFirstTeamHadPlayed && !checkSecondTeamHadPlayed && !checkAlreadyExist ? randomMatch : false;
     }
+
+    const createChampionship = () => {
+        let randomListOfMatches = [];
+
+        while(randomListOfMatches.length !== arrMatches.length){
+            let result = getRandomMatch(randomListOfMatches);
+            if(result){
+                randomListOfMatches.push(result)
+            }
+        }
+
+        setMatchesRandom(randomListOfMatches);
+    }
+
+    useEffect(() => {
+        console.log(matchesRandom)
+    },[matchesRandom])
+
 
 
     useEffect(() => {
@@ -66,6 +75,15 @@ const Matches = () => {
         // setTeamsFiltered(checkedTeamName);
         generateMatches();
     },[])
+
+    useEffect(() => {
+        if(arrMatches.length > 0){
+            console.log(arrMatches)
+            console.log("AQUI VAI EXECUTAR O GENERATE CODE")
+            createChampionship();
+        }
+
+    },[arrMatches])
 
     return(
         <MatchesStyled>
