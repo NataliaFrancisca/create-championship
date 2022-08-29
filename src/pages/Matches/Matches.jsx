@@ -31,34 +31,68 @@ const Matches = () => {
     }
 
     // GERAR UMA LISTA DE PARTIDAS ALEATORIAS, EVITAR O MESMO TIME JOGAR DUAS PARTIDAS SEGUIDAS
-    const getRandomMatch = (sortMatches, arrCopy) => {
-        const randomNumber = Math.floor(Math.random() * arrCopy.length);
-        const randomMatch = arrCopy[randomNumber];
+    const randomListMatch = (sortMatches) => {
+        const randomNumber = Math.floor(Math.random() * arrMatches.length);
+        const randomMatch = arrMatches[randomNumber];
 
-        const checkAlreadyExist = sortMatches.some(match => JSON.stringify(match) == JSON.stringify(randomMatch));
         const teamPlayedLastMatch = sortMatches.length > 0 ? sortMatches.at(-1) : false;
+        const checkAlreadyExist = sortMatches.some(match => match == randomMatch);
 
-        const checkFirstTeamHadPlayed = teamPlayedLastMatch && randomMatch.includes(teamPlayedLastMatch[0]);
-        const checkSecondTeamHadPlayed = teamPlayedLastMatch && randomMatch.includes(teamPlayedLastMatch[1]);
-
-        if(checkAlreadyExist){
-            arrCopy.splice(randomNumber, 1);
-        }
-        return !checkFirstTeamHadPlayed && !checkSecondTeamHadPlayed ? randomMatch : false;
+        return !checkAlreadyExist ? randomMatch : false;
     }
 
-    const createChampionshipMatches = () => {
-        let arrMatchesCopy = [...arrMatches];
-        let arrMatchesRandom = [];
 
-        while(arrMatchesRandom.length !== arrMatches.length){
-            const result = getRandomMatch(arrMatchesRandom, arrMatchesCopy);
+    const findNextMatch = (previousMatch, prevArr, sortArr) => {
+        const firstTeam = previousMatch[0];
+        const secondTeam = previousMatch[1];
+
+        const result = prevArr.find(arr => !arr.includes(firstTeam) && !arr.includes(secondTeam));
+        const alreadyAdd = sortArr.some(arr => JSON.stringify(arr) == JSON.stringify(result));
+
+        return alreadyAdd ? false : result;
+    }
+
+
+    const getRandomArr = () => {
+        let random = [];
+
+        while(random.length !== arrMatches.length){
+            let result = randomListMatch(random);
+
             if(result){
-                arrMatchesRandom.push(result);
+                random.push(result);
             }
         }
-        setMatchesRandom(arrMatchesRandom);
+
+        return random;
     }
+
+
+    const teste = () => {
+        const randomArr = getRandomArr();
+        let copyArr = [...randomArr.slice(1, randomArr.length)];
+        let sortArr = [randomArr[0]];
+
+        for(let i = 0; i < randomArr.length - 1; i++){
+            const nextMatch = findNextMatch(sortArr[i], copyArr, sortArr);
+            if(nextMatch){
+                const indexOfNextMatch = copyArr.indexOf(nextMatch);
+                copyArr.splice(indexOfNextMatch, 1);
+                sortArr.push(nextMatch)
+            }
+        }
+
+        if(copyArr.length == 1){
+            console.log("sad girl :(");
+            teste();
+            return false;
+        }
+
+
+        setMatchesRandom(sortArr)
+    }
+
+
 
     useEffect(() => {
         generateMatches();
@@ -66,7 +100,9 @@ const Matches = () => {
 
     useEffect(() => {
         if(arrMatches.length > 0){
-            createChampionshipMatches();
+            // createChampionshipMatches();
+
+            teste();
         }
     },[arrMatches])
 
@@ -74,8 +110,8 @@ const Matches = () => {
         <MatchesStyled>
             <h1>Matches:</h1>
 
-            {matchesRandom && matchesRandom.map(match => (
-                <p>{match[0]} x {match[1]}</p>
+            {matchesRandom && matchesRandom.map((match, index) => (
+                <p key={index}>{match[0]} x {match[1]}</p>
             ))}
         </MatchesStyled>
     )
