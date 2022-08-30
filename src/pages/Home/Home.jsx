@@ -25,6 +25,8 @@ const Home = () => {
                 nameTeam: null
             });
         }
+
+        localStorage.setItem("teamNumber", JSON.stringify(prevState))
         setTeams(prevState);
     }
 
