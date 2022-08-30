@@ -33,6 +33,7 @@ const Home = () => {
     const saveNameTeams = () => {
         event.preventDefault();
         setTeams(teams);
+        localStorage.setItem("teamNumber", JSON.stringify(teams))
         navigate("/matches");
     }
 
