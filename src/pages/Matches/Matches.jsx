@@ -1,24 +1,14 @@
-import { useEffect, useState, useRef } from "react";
-import { useTeamsContext } from "../../hook/useTeamsContext";
+import { useEffect, useState } from "react";
 
 import { MatchesStyled } from "./MatchesStyle";
 
 const Matches = () => {
 
-    // const [teamsFiltered, setTeamsFiltered] = useState();
     const [arrMatches, setArrMatches] = useState([]);
     const [matchesRandom, setMatchesRandom] = useState([]);
 
-    // const {teams} = useTeamsContext();
+    const teams = JSON.parse(localStorage.getItem("teamNumber"));
 
-    const teams = [
-        {id: 1, numberTeam: 1, nameTeam: undefined},
-        {id: 2, numberTeam: 2, nameTeam: undefined},
-        {id: 3, numberTeam: 3, nameTeam: undefined},
-        {id: 4, numberTeam: 4, nameTeam: undefined},
-        {id: 5, numberTeam: 5, nameTeam: undefined},
-    ]
-    
     // GERAR AS PARTIDAS QUE VÃO SER JOGADAS
     const generateMatches = () => {
         let state = [];
@@ -30,18 +20,27 @@ const Matches = () => {
         setArrMatches(state);
     }
 
-    // GERAR UMA LISTA DE PARTIDAS ALEATORIAS, EVITAR O MESMO TIME JOGAR DUAS PARTIDAS SEGUIDAS
-    const randomListMatch = (sortMatches) => {
+    // PEGAR UMA PARTIDA ALEATORIA DENTRO DO ARRAY
+    const getRandomMatch = (sortMatches) => {
         const randomNumber = Math.floor(Math.random() * arrMatches.length);
         const randomMatch = arrMatches[randomNumber];
-
-        const teamPlayedLastMatch = sortMatches.length > 0 ? sortMatches.at(-1) : false;
         const checkAlreadyExist = sortMatches.some(match => match == randomMatch);
-
         return !checkAlreadyExist ? randomMatch : false;
     }
+    
+    // PEGAR UMA LISTA DE PARTIDAS ALEATORIAS
+    const randomListMatch = () => {
+        let listOfRandomMatches = [];
 
+        while(listOfRandomMatches.length !== arrMatches.length){
+            let result = getRandomMatch(listOfRandomMatches);
+            result && listOfRandomMatches.push(result);
+        }
 
+        return listOfRandomMatches;
+    }
+
+    // PEGAR A PRÓXIMA PARTIDA, MAS QUE NÃO TENHA OS MESMOS TIMES DA ÚLTIMA PARTIDA QUE TEVE
     const findNextMatch = (previousMatch, prevArr, sortArr) => {
         const firstTeam = previousMatch[0];
         const secondTeam = previousMatch[1];
@@ -52,47 +51,56 @@ const Matches = () => {
         return alreadyAdd ? false : result;
     }
 
+    const createSmallChampionshipMatches = () => {
+        let matchesSortArr = [];
+        const numberFor = arrMatches.length % 2 !== 0 ? ((arrMatches.length % 2) + 1) : arrMatches.length / 2;
+        
+        for(let i = 0; i < numberFor; i++){
+            const firstValue = arrMatches[i];
+            const lastValue = arrMatches[arrMatches.length - (i+1)];
+   
+            matchesSortArr.push(firstValue)
 
-    const getRandomArr = () => {
-        let random = [];
-
-        while(random.length !== arrMatches.length){
-            let result = randomListMatch(random);
-
-            if(result){
-                random.push(result);
+            if(!matchesSortArr.find(arr => JSON.stringify(arr) == JSON.stringify(lastValue))){
+                matchesSortArr.push(lastValue)
             }
         }
 
-        return random;
+        setMatchesRandom(matchesSortArr);
     }
 
+    const createBiggerChampionshipMatches = () => {
+        const randomArr = randomListMatch();
+        const randomArrLength = randomArr.length;
 
-    const teste = () => {
-        const randomArr = getRandomArr();
-        let copyArr = [...randomArr.slice(1, randomArr.length)];
-        let sortArr = [randomArr[0]];
+        let matchesArr = [...randomArr.slice(1, randomArrLength)];
+        let matchesSortArr = [randomArr[0]];
 
-        for(let i = 0; i < randomArr.length - 1; i++){
-            const nextMatch = findNextMatch(sortArr[i], copyArr, sortArr);
+        for(let i = 0; i < matchesArr.length; i++){    
+            const nextMatch = findNextMatch(matchesSortArr[i], matchesArr, matchesSortArr);
+            const indexOfNextMatch = matchesArr.indexOf(nextMatch);
+
             if(nextMatch){
-                const indexOfNextMatch = copyArr.indexOf(nextMatch);
-                copyArr.splice(indexOfNextMatch, 1);
-                sortArr.push(nextMatch)
+                matchesArr.splice(indexOfNextMatch, 1);
+                matchesSortArr.push(nextMatch)
             }
         }
 
-        if(copyArr.length == 1){
-            console.log("sad girl :(");
-            teste();
+        if(matchesArr.length == 1){
+            createChampionshipMatches();
             return false;
         }
 
-
-        setMatchesRandom(sortArr)
+        setMatchesRandom(matchesSortArr)
     }
 
-
+    const createChampionshipMatches = () => {
+        if(teams.length <= 4){
+            createSmallChampionshipMatches();
+        }else{
+            createBiggerChampionshipMatches();
+        }
+    }
 
     useEffect(() => {
         generateMatches();
@@ -100,16 +108,13 @@ const Matches = () => {
 
     useEffect(() => {
         if(arrMatches.length > 0){
-            // createChampionshipMatches();
-
-            teste();
+            createChampionshipMatches();
         }
     },[arrMatches])
 
     return(
         <MatchesStyled>
             <h1>Matches:</h1>
-
             {matchesRandom && matchesRandom.map((match, index) => (
                 <p key={index}>{match[0]} x {match[1]}</p>
             ))}
