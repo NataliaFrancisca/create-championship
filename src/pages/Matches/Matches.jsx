@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-
 import { MatchesStyled } from "./MatchesStyle";
+import Match from "../../components/Match/Match";
 
 const Matches = () => {
 
@@ -12,11 +12,14 @@ const Matches = () => {
     // GERAR AS PARTIDAS QUE VÃO SER JOGADAS
     const generateMatches = () => {
         let state = [];
+        
         for(let i = 1; i <= teams.length; i++){
             for(let n = 1; n <= (teams.length - i); n++){
+                // console.log(teams[i-1], teams[i+n-1])
                 state.push([i, i+n]);
             }
         }
+ 
         setArrMatches(state);
     }
 
@@ -28,7 +31,7 @@ const Matches = () => {
         return !checkAlreadyExist ? randomMatch : false;
     }
     
-    // PEGAR UMA LISTA DE PARTIDAS ALEATORIAS
+    // PEGAR A LISTA DE PARTIDAS ALEATORIAS
     const randomListMatch = () => {
         let listOfRandomMatches = [];
 
@@ -38,17 +41,6 @@ const Matches = () => {
         }
 
         return listOfRandomMatches;
-    }
-
-    // PEGAR A PRÓXIMA PARTIDA, MAS QUE NÃO TENHA OS MESMOS TIMES DA ÚLTIMA PARTIDA QUE TEVE
-    const findNextMatch = (previousMatch, prevArr, sortArr) => {
-        const firstTeam = previousMatch[0];
-        const secondTeam = previousMatch[1];
-
-        const result = prevArr.find(arr => !arr.includes(firstTeam) && !arr.includes(secondTeam));
-        const alreadyAdd = sortArr.some(arr => JSON.stringify(arr) == JSON.stringify(result));
-
-        return alreadyAdd ? false : result;
     }
 
     const createSmallChampionshipMatches = () => {
@@ -65,8 +57,18 @@ const Matches = () => {
                 matchesSortArr.push(lastValue)
             }
         }
-
         setMatchesRandom(matchesSortArr);
+    }
+
+     // PEGAR A PRÓXIMA PARTIDA, MAS QUE NÃO TENHA OS MESMOS TIMES DA ÚLTIMA PARTIDA QUE TEVE
+    const findNextMatch = (previousMatch, prevArr, sortArr) => {
+        const firstTeam = previousMatch[0];
+        const secondTeam = previousMatch[1];
+
+        const result = prevArr.find(arr => !arr.includes(firstTeam) && !arr.includes(secondTeam));
+        const alreadyAdd = sortArr.some(arr => JSON.stringify(arr) == JSON.stringify(result));
+
+        return alreadyAdd ? false : result;
     }
 
     const createBiggerChampionshipMatches = () => {
@@ -76,10 +78,9 @@ const Matches = () => {
         let matchesArr = [...randomArr.slice(1, randomArrLength)];
         let matchesSortArr = [randomArr[0]];
 
-        for(let i = 0; i < matchesArr.length; i++){    
+        for(let i = 0; i < randomArrLength - 1; i++){    
             const nextMatch = findNextMatch(matchesSortArr[i], matchesArr, matchesSortArr);
             const indexOfNextMatch = matchesArr.indexOf(nextMatch);
-
             if(nextMatch){
                 matchesArr.splice(indexOfNextMatch, 1);
                 matchesSortArr.push(nextMatch)
@@ -87,10 +88,10 @@ const Matches = () => {
         }
 
         if(matchesArr.length == 1){
-            createChampionshipMatches();
+            createBiggerChampionshipMatches();
             return false;
         }
-
+        
         setMatchesRandom(matchesSortArr)
     }
 
@@ -116,7 +117,7 @@ const Matches = () => {
         <MatchesStyled>
             <h1>Matches:</h1>
             {matchesRandom && matchesRandom.map((match, index) => (
-                <p key={index}>{match[0]} x {match[1]}</p>
+                <Match matchData={match} key={index} numberMatch={index} />
             ))}
         </MatchesStyled>
     )
