@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { MatchesStyled } from "./MatchesStyle";
 import Match from "../../components/Match/Match";
 
@@ -6,20 +8,25 @@ const Matches = () => {
 
     const [arrMatches, setArrMatches] = useState([]);
     const [matchesRandom, setMatchesRandom] = useState([]);
+    const navigate = useNavigate();
 
     const teams = JSON.parse(localStorage.getItem("teamNumber"));
-
+    
     // GERAR AS PARTIDAS QUE VÃO SER JOGADAS
     const generateMatches = () => {
         let state = [];
-        
+
+        if(!teams){
+            navigate("/");
+            return false;
+        }
+
         for(let i = 1; i <= teams.length; i++){
             for(let n = 1; n <= (teams.length - i); n++){
-                // console.log(teams[i-1], teams[i+n-1])
                 state.push([i, i+n]);
             }
         }
- 
+
         setArrMatches(state);
     }
 
@@ -95,21 +102,15 @@ const Matches = () => {
         setMatchesRandom(matchesSortArr)
     }
 
-    const createChampionshipMatches = () => {
-        if(teams.length <= 4){
-            createSmallChampionshipMatches();
-        }else{
-            createBiggerChampionshipMatches();
-        }
-    }
-
     useEffect(() => {
         generateMatches();
     },[])
 
     useEffect(() => {
-        if(arrMatches.length > 0){
-            createChampionshipMatches();
+        if(teams && teams.length <= 4){
+            createSmallChampionshipMatches();
+        }else{
+            createBiggerChampionshipMatches();
         }
     },[arrMatches])
 
