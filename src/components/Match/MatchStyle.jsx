@@ -7,19 +7,25 @@ export const MatchStyled = styled.div`
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     #container-dashboard{
         background-color: var(--orange);
         border-radius: 4px;
         padding: 20px 10px;
-        width: 90%;
+        width: 60%;
+        margin-left: 20px;
 
         display: grid;
         grid-template-columns: 40% 20% 40%;
         align-items: center;
         justify-items: center;
         justify-content: space-between;
+
+        & input[type="radio"]{
+            margin: 0 6px;
+            /* display: none; */
+        }
 
         @media screen and (max-width: 600px){
             width: 80%;
@@ -29,11 +35,9 @@ export const MatchStyled = styled.div`
     .team{
         font-size: 1.8em;
         font-family: var(--title);
+        cursor: pointer;
     }
 
-    .team:nth-child(-2){
-        color: red;
-    }
 
     #winner{
         margin: 0 10px;
