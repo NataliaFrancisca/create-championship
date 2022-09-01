@@ -15,9 +15,6 @@ const Match = ({matchData, numberMatch}) => {
         const firstTeam = data.find(team => team.id == matchData[0]);
         const secondTeam = data.find(team => team.id == matchData[1]);
 
-        console.log(firstTeam)
-        console.log(secondTeam)
-
         setFirstTeam(firstTeam)
         setSecondTeam(secondTeam);
     }
@@ -26,7 +23,7 @@ const Match = ({matchData, numberMatch}) => {
         const winnerMatch = {numberMatch: matchNumber, winner: value.nameTeam};
         const filteredArr = winners.filter(match => match.numberMatch !== winnerMatch.numberMatch);
         setWinners([...filteredArr, winnerMatch]);
-        console.log(winners)
+        localStorage.setItem("winners", JSON.stringify(filteredArr));
     }
 
     useEffect(() => {
