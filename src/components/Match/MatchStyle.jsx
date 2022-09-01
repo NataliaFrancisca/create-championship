@@ -7,24 +7,27 @@ export const MatchStyled = styled.div`
 
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
     #container-dashboard{
         background-color: var(--orange);
         border-radius: 4px;
         padding: 20px 10px;
-        width: 60%;
+        width: 50%;
         margin-left: 20px;
 
         display: grid;
         grid-template-columns: 40% 20% 40%;
         align-items: center;
         justify-items: center;
-        justify-content: space-between;
+        justify-content: center;
 
         & input[type="radio"]{
-            margin: 0 6px;
-            /* display: none; */
+            display: none;
+        }
+
+        & input:checked ~ label{
+            color: greenyellow;
         }
 
         @media screen and (max-width: 600px){
