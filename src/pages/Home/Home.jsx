@@ -18,8 +18,8 @@ const Home = () => {
         for(let i = 1; i <= totalOfTeams; i++){
             prevState.push({
                 id: i,
-                numberTeam: i,
-                nameTeam: null
+                nameTeam: null,
+                wins: 0
             });
         }
 
