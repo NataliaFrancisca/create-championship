@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { MatchesStyled } from "./MatchesStyle";
+import { MatchesStyled, BackgroundMask } from "./MatchesStyle";
+import { useTeamsContext } from "../../hook/useTeamsContext";
+
 import Match from "../../components/Match/Match";
+import Modal from "../../components/Modal/Modal";
 
 const Matches = () => {
 
     const [arrMatches, setArrMatches] = useState([]);
     const [matchesRandom, setMatchesRandom] = useState([]);
+    const {winners} = useTeamsContext();
+    const [modal, setModal] = useState(false);
+
     const navigate = useNavigate();
 
     const teams = JSON.parse(localStorage.getItem("teamNumber"));
@@ -26,7 +32,7 @@ const Matches = () => {
                 state.push([i, i+n]);
             }
         }
-
+        
         setArrMatches(state);
     }
 
@@ -98,12 +104,15 @@ const Matches = () => {
             createBiggerChampionshipMatches();
             return false;
         }
-        
-        setMatchesRandom(matchesSortArr)
+
+        if(matchesSortArr.length > 1){
+            setMatchesRandom(matchesSortArr);
+        }
     }
 
     useEffect(() => {
         generateMatches();
+        localStorage.setItem("winners", []);
     },[])
 
     useEffect(() => {
@@ -114,12 +123,22 @@ const Matches = () => {
         }
     },[arrMatches])
 
+    useEffect(() => {
+        if(winners.length == matchesRandom.length){
+            setModal(!modal)
+        }
+    },[winners])
+
+    const toggleModal = () => setModal(!modal);
+    
     return(
         <MatchesStyled>
+            <BackgroundMask filter={modal} />
             <h1>Matches:</h1>
             {matchesRandom && matchesRandom.map((match, index) => (
                 <Match matchData={match} key={index} numberMatch={index} />
             ))}
+            {modal && <Modal onCloseModal={toggleModal} />} 
         </MatchesStyled>
     )
 }
