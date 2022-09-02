@@ -26,15 +26,18 @@ const Home = () => {
         setTeams(prevState);
     }
 
-    const saveNameTeams = () => {
+    const saveNameTeams = () => {  
+        event.preventDefault();
+
         const namedTeams = teams.map(team => {
             if(team.nameTeam == undefined){
                 team.nameTeam = `Team ${team.id}`
+            }else{
+                team.nameTeam = team.nameTeam[0].toUpperCase() + team.nameTeam.slice(1, team.nameTeam.length);
             }
             return team;
         })
 
-        event.preventDefault();
         localStorage.setItem("teams", JSON.stringify(namedTeams))
         navigate("/matches");
     }
