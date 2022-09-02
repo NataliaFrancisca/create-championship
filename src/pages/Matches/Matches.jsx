@@ -16,7 +16,7 @@ const Matches = () => {
 
     const navigate = useNavigate();
 
-    const teams = JSON.parse(localStorage.getItem("teamNumber"));
+    const teams = JSON.parse(localStorage.getItem("teams"));
     
     // GERAR AS PARTIDAS QUE VÃO SER JOGADAS
     const generateMatches = () => {
@@ -124,7 +124,7 @@ const Matches = () => {
     },[arrMatches])
 
     useEffect(() => {
-        if(winners.length == matchesRandom.length){
+        if(matchesRandom.length > 0 && winners.length == matchesRandom.length){
             setModal(!modal)
         }
     },[winners])
@@ -133,7 +133,7 @@ const Matches = () => {
     
     return(
         <MatchesStyled>
-            <BackgroundMask filter={modal} />
+            <BackgroundMask activeFilter={modal} />
             <h1>Matches:</h1>
             {matchesRandom && matchesRandom.map((match, index) => (
                 <Match matchData={match} key={index} numberMatch={index} />
