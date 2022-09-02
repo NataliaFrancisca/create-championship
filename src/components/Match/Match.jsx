@@ -34,7 +34,7 @@ const Match = ({matchData, numberMatch}) => {
         <MatchStyled>
             <h1>#{matchNumber}</h1>
                 <form id="container-dashboard">
-                    <div>
+                    <div className="radioInput">
                         <input 
                             type="radio" 
                             id={`first_team_${matchNumber}`} 
@@ -47,7 +47,7 @@ const Match = ({matchData, numberMatch}) => {
 
                     <span id="winner">X</span>
 
-                    <div>
+                    <div className="radioInput">
                         <input 
                             type="radio" 
                             id={`second_team_${matchNumber}`} 
