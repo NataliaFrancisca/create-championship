@@ -1,5 +1,5 @@
 export const getWinner = (results) => {
-    const dataTeams = JSON.parse(localStorage.getItem("teamNumber"));
+    const dataTeams = JSON.parse(localStorage.getItem("teams"));
 
     results.forEach(match => {
         dataTeams.map(team => {
@@ -10,5 +10,5 @@ export const getWinner = (results) => {
         })
     })
 
-    return dataTeams.sort((a,b) => a.wins - b.wins).reverse();
+    return dataTeams.sort((a, b) => a.wins > b.wins ? -1 : 1)
 }
