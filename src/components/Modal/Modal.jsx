@@ -6,21 +6,19 @@ import { useTeamsContext } from "../../hook/useTeamsContext";
 const Modal = ({onCloseModal}) => {
 
     const {winners} = useTeamsContext();
-    const result = getWinner(winners).sort((a,b) => a - b);
+    const result = getWinner(winners).sort((a,b) => a.nameTeam - b.nameTeam);
 
     const [firstPlace, secondPlace, thirdPlace] = result;
 
     return(
-        <ModalStyled>
-            
+        <ModalStyled>            
             <header>
                 <button onClick={() => onCloseModal()}>
-                    <span class="material-symbols-outlined">close</span>
+                    <span className="material-symbols-outlined">close</span>
                 </button>
             </header>
 
-
-            <Podium id="podium">
+            <Podium>
                 <div id="second-place">
                     <span className="position">2º</span>
                     <h1 className="name-winner">{secondPlace.nameTeam}</h1>
@@ -36,7 +34,6 @@ const Modal = ({onCloseModal}) => {
                     <h1 className="name-winner">{thirdPlace.nameTeam}</h1>
                 </div>
             </Podium>
-
           
         </ModalStyled>
     )
