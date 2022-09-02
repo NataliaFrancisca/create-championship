@@ -44,5 +44,5 @@ export const BackgroundMask = styled.div`
     background-color: rgba(0, 0, 0, 0.8);
     -webkit-tap-highlight-color: transparent;
     z-index: 1;
-    inset: ${props => props.filter ? "0px" : 'none'};
+    inset: ${props => props.activeFilter ? "0px" : 'none'};
 `
