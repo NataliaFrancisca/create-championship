@@ -22,14 +22,20 @@ const Home = () => {
                 wins: 0
             });
         }
-
-        localStorage.setItem("teamNumber", JSON.stringify(prevState))
+        localStorage.setItem("teams", JSON.stringify(prevState))
         setTeams(prevState);
     }
 
     const saveNameTeams = () => {
+        const namedTeams = teams.map(team => {
+            if(team.nameTeam == undefined){
+                team.nameTeam = `Team ${team.id}`
+            }
+            return team;
+        })
+
         event.preventDefault();
-        localStorage.setItem("teamNumber", JSON.stringify(teams))
+        localStorage.setItem("teams", JSON.stringify(namedTeams))
         navigate("/matches");
     }
 
@@ -51,11 +57,10 @@ const Home = () => {
                 {teams && teams.length > 2 &&
                     <FormNameTeams onSubmit={saveNameTeams}>
                         <p>If you want, you can change the teams name:</p>
-
                             <div id="list-teams">
                                 {teams &&
                                     teams.map(team => (
-                                        <InputTeam numberTeam={team} />
+                                        <InputTeam numberTeam={team} key={team.id}/>
                                     ))
                                 }
                             </div>
