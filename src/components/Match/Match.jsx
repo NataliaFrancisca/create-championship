@@ -11,7 +11,7 @@ const Match = ({matchData, numberMatch}) => {
     const matchNumber = numberMatch + 1;
 
     const getDataFromTeam = () => {
-        const data = JSON.parse(localStorage.getItem("teamNumber"));
+        const data = JSON.parse(localStorage.getItem("teams"));
         const firstTeam = data.find(team => team.id == matchData[0]);
         const secondTeam = data.find(team => team.id == matchData[1]);
 
@@ -30,26 +30,6 @@ const Match = ({matchData, numberMatch}) => {
         getDataFromTeam();
     },[])
 
-    useEffect(() => {
-        if(firstTeam && firstTeam.nameTeam == null){
-            const updatedData = {
-                ...firstTeam,
-                nameTeam: `Team ${firstTeam.id}`
-            }
-            setFirstTeam(updatedData)
-        }
-    },[firstTeam])
-
-    useEffect(() => {
-        if(secondTeam && secondTeam.nameTeam == null){
-            const updatedData = {
-                ...secondTeam,
-                nameTeam: `Team ${secondTeam.id}`
-            }
-            setSecondTeam(updatedData)
-        }
-    },[secondTeam])
-
     return(
         <MatchStyled>
             <h1>#{matchNumber}</h1>
@@ -62,7 +42,7 @@ const Match = ({matchData, numberMatch}) => {
                             value={firstTeam?.nameTeam} 
                             onChange={() => setWinnerFromMatch(firstTeam)}
                         />
-                        <label className="team" for={`first_team_${matchNumber}`}>{firstTeam?.nameTeam}</label>
+                        <label className="team" htmlFor={`first_team_${matchNumber}`}>{firstTeam?.nameTeam}</label>
                     </div>
 
                     <span id="winner">X</span>
