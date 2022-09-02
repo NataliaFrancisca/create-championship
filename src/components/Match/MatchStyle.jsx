@@ -9,6 +9,10 @@ export const MatchStyled = styled.div`
     align-items: center;
     justify-content: center;
 
+    @media screen and (max-width: 600px){
+        justify-content: space-between;
+    }
+
     #container-dashboard{
         background-color: var(--orange);
         border-radius: 4px;
@@ -31,7 +35,7 @@ export const MatchStyled = styled.div`
         }
 
         @media screen and (max-width: 600px){
-            width: 80%;
+            width: 75%;
         }
     }
 
@@ -39,8 +43,15 @@ export const MatchStyled = styled.div`
         font-size: 1.8em;
         font-family: var(--title);
         cursor: pointer;
+
+        @media screen and (max-width: 600px){
+            font-size: 1.4em;
+        }
     }
 
+    .radioInput{
+        padding: 4px;
+    }
 
     #winner{
         margin: 0 10px;
