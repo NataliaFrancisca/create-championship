@@ -75,6 +75,10 @@ const Matches = () => {
 
      // PEGAR A PRÓXIMA PARTIDA, MAS QUE NÃO TENHA OS MESMOS TIMES DA ÚLTIMA PARTIDA QUE TEVE
     const findNextMatch = (previousMatch, prevArr, sortArr) => {
+        if(!previousMatch){
+            return false;
+        }
+
         const firstTeam = previousMatch[0];
         const secondTeam = previousMatch[1];
 
@@ -128,8 +132,6 @@ const Matches = () => {
             setModal(!modal)
         }
     },[winners])
-
-    const toggleModal = () => setModal(!modal);
     
     return(
         <MatchesStyled>
@@ -138,7 +140,7 @@ const Matches = () => {
             {matchesRandom && matchesRandom.map((match, index) => (
                 <Match matchData={match} key={index} numberMatch={index} />
             ))}
-            {modal && <Modal onCloseModal={toggleModal} />} 
+            {modal && <Modal onCloseModal={() => setModal(!modal)} />} 
         </MatchesStyled>
     )
 }
