@@ -2,19 +2,18 @@ import styled from "styled-components";
 
 export const ModalStyled = styled.div`
     width: 50%;
-    height: 40%;
+    height: max-content;
 
     background-color: var(--white);
 
     position: absolute;
     top: 30%;
     left: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -80%);
     z-index: 11;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-direction: column;
 
     padding: 14px;
@@ -27,67 +26,63 @@ export const ModalStyled = styled.div`
         width: 100%;
         margin: 10px 0;
 
-
         & button{
             cursor: pointer;
-            background-color: var(--pink);
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 6px;
             border-radius: 4px;
+
+            &:hover{
+                color: var(--pink);
+            }
         }
     }
+
+    & section{
+        width: 100%;
+        height: auto;
+
+        display: flex;
+        flex-direction: column;
+
+        border: solid black 2px;
+        border-radius: 4px;
+        margin: 20px 0; 
+
+        & #podium-team{
+            display: flex;
+            font-size: 1.4em;
+            padding: 10px 0 10px 4px;
+            border-bottom: 2px solid black;
+
+            & span{
+                margin-right: 10px;
+                font-weight: bold;
+            }
+        }
+
+        & #podium-team:nth-child(1){
+            background-color: var(--yellow);
+        }
+
+        & #podium-team:nth-child(2){
+            background-color: var(--blue);
+        }
+
+        & #podium-team:nth-child(3){
+            background-color: var(--orange);
+        }
+
+        & #podium-team:last-child{
+            border-bottom: 0;
+        }
+    }
+
 
     @media screen and (max-width: 700px) {
         width: 90%;
-    }
-`
-
-export const Podium = styled.section`
-    width: 100%;
-    height: 90%;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    & div{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 5px;
-        box-shadow: 0px 0px 2px 1px;
-
-        & .position{
-            font-size: 2.4em;
-            text-align: center;
-            font-weight: bold;
-            font-family: var(--title);
-        }
-
-        & .name-winner{
-            font-size: 1.4em;
-        }
-    }
-
-    & #first-place{
-        height: 80%;
-        width: 30%;
-        background-color: #F0A500;
-        margin: 0 6px;
-    }
-
-    & #second-place{
-        height: 60%;
-        width: 30%;
-        background-color: #EEEEEE;
-    }
-
-    & #third-place{
-        height: 50%;
-        width: 30%;
-        background-color: #FF5F00;
     }
 `
